@@ -21,10 +21,10 @@ case "$PROFILE" in
     base|chromium) ;;
     *) echo "Unsupported PROFILE=$PROFILE; choose base or chromium" >&2; exit 2 ;;
 esac
-case "$VERSION" in
-    v[0-9]*.[0-9]*.[0-9]*) ;;
-    *) echo "VERSION must look like v0.1.0" >&2; exit 2 ;;
-esac
+if [[ ! "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    echo "VERSION must look like v0.1.0" >&2
+    exit 2
+fi
 command -v docker >/dev/null || { echo 'Docker is required' >&2; exit 2; }
 
 mkdir -p "$CACHE_DIR" "$ARTIFACT_DIR"
