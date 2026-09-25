@@ -23,10 +23,8 @@ fonts. `PROFILE=base` builds a small ABI smoke-test rootfs with `-base-` in
 its artifact name.
 
 The archive uses the same `tar-zst`, one-component-stripped layout as Scarlet's
-current Linux bundle. Until an Alpine release is published and its SHA-256 is
-pinned in Scarlet, use an isolated Scarlet image manifest to consume a local
-artifact. Do not replace the published Buildroot rootfs solely on the basis of
-artifact creation.
+current Linux bundle. `bundles/rootfs/bundle.toml` pins the experimental
+v0.1.0 release for the AArch64 project.
 
 ## Scarlet bring-up
 
@@ -59,5 +57,4 @@ surface validation, and a Linux audio compatibility path. The current
   generation.
 - `producer/tests/`: artifact checks.
 - `producer/artifacts/`: ignored local release candidates.
-- `bundles/rootfs/`: reserved for a hash-pinned release manifest after the
-  first runtime validation.
+- `bundles/rootfs/bundle.toml`: hash-pinned AArch64 archive layer.
