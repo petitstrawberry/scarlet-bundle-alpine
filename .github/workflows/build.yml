@@ -1,0 +1,46 @@
+name: Build Alpine rootfs
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Artifact version
+        required: true
+        default: v0.1.0
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash -n producer/tools/build_rootfs.sh producer/tests/*.sh
+
+  build:
+    if: github.event_name == 'workflow_dispatch'
+    needs: validate
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Chromium rootfs
+        env:
+          ARCH: aarch64
+          PROFILE: chromium
+          VERSION: ${{ inputs.version }}
+        run: bash producer/tools/build_rootfs.sh
+      - name: Check archive and JavaScript
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          bash producer/tests/check_artifact.sh "producer/artifacts/rootfs-aarch64-${VERSION}.tar.zst"
+          stage="$(find producer/cache -maxdepth 1 -type d -name 'rootfs-aarch64-chromium.*' -print -quit)"
+          bash producer/tests/smoke_chromium.sh "$stage"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: alpine-chromium-aarch64
+          path: producer/artifacts/rootfs-aarch64-${{ inputs.version }}.tar.zst
+          if-no-files-found: error
