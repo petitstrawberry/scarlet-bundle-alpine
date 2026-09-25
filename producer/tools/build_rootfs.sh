@@ -45,7 +45,7 @@ docker run --rm --platform "$docker_platform" \
         cp -a /etc/apk/keys /out/etc/apk/
         printf "https://dl-cdn.alpinelinux.org/alpine/%s/main\nhttps://dl-cdn.alpinelinux.org/alpine/%s/community\n" "$ALPINE_BRANCH" "$ALPINE_BRANCH" > /out/etc/apk/repositories
         if [ "$PROFILE" = chromium ]; then
-            set -- alpine-baselayout busybox ca-certificates chromium chromium-swiftshader font-dejavu
+            set -- alpine-baselayout busybox ca-certificates chromium chromium-swiftshader font-dejavu libstdc++
         else
             set -- alpine-baselayout busybox ca-certificates
         fi

@@ -18,9 +18,12 @@ The script uses Alpine 3.23 `main` and `community`, verifies packages using
 Alpine's signing keys, and writes
 `producer/artifacts/rootfs-aarch64-v0.1.0.tar.zst`. It also records installed
 package versions at `/usr/share/scarlet/apk-packages.txt` inside the archive.
-The rootfs includes `chromium`, `chromium-swiftshader`, CA certificates, and
-fonts. `PROFILE=base` builds a small ABI smoke-test rootfs with `-base-` in
-its artifact name.
+The rootfs includes `chromium`, `chromium-swiftshader`, CA certificates, fonts,
+and the C++ runtime needed by Mozc. The bundle adds a pinned standalone musl
+`mozc_server` archive from `scarlet-bundle-linux`; its OSS conversion dictionary
+is compiled into the server binary. Alpine 3.23 does not supply this standalone
+server in its `main` or `community` package repositories. `PROFILE=base` builds
+a small ABI smoke-test rootfs with `-base-` in its artifact name.
 
 The archive uses the same `tar-zst`, one-component-stripped layout as Scarlet's
 current Linux bundle. `bundles/rootfs/bundle.toml` pins the experimental

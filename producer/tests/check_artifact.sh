@@ -16,6 +16,7 @@ docker run --rm --platform linux/arm64 \
         tar -I zstd -tf "/artifacts/$ARCHIVE_NAME" | grep -qx "./etc/apk/world"
         if [ "$PROFILE" = chromium ]; then
             tar -I zstd -tf "/artifacts/$ARCHIVE_NAME" | grep -qx "./usr/bin/chromium"
+            tar -I zstd -tf "/artifacts/$ARCHIVE_NAME" | grep -qx "./usr/lib/libstdc++.so.6"
         fi
     '
 echo "Artifact structure OK: $archive"
